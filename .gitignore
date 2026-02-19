@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contains secrets!)
+.env
+
+# Database (contains personal data)
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploaded files (user content - not part of source)
+uploads/*
+!uploads/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage & test output
+coverage/
+.nyc_output/
+
+# Build output
+dist/
+build/
+
+# Temporary SQL migration files
+add_social_columns.sql
+check_settings.sql
+migrate_settings.sql
+
+# Dev-only helper scripts
+reset-db.js

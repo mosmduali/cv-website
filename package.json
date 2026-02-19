@@ -1,0 +1,26 @@
+{
+    "name": "cv-website",
+    "version": "1.0.0",
+    "description": "Magnificent CV website with admin panel",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "node server.js"
+    },
+    "keywords": [
+        "cv",
+        "portfolio",
+        "admin"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "better-sqlite3": "^9.2.2",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "express-session": "^1.17.3",
+        "multer": "^1.4.5-lts.1",
+        "node-fetch": "^3.3.2"
+    }
+}
