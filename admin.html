@@ -157,7 +157,16 @@
                         </div>
                         <div class="form-group">
                             <label>Profile Picture</label>
-                            <input type="file" name="profile_image" id="profileImage" accept="image/*">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                <label class="btn btn-secondary" style="margin: 0;">
+                                    Choose File
+                                    <input type="file" name="profile_image" id="profileImage" accept="image/*"
+                                        style="display: none;"
+                                        onchange="document.getElementById('profileFileName').textContent = this.files.length > 0 ? this.files[0].name : 'No file chosen'">
+                                </label>
+                                <span id="profileFileName" style="color: var(--text-muted); font-size: 0.875rem;">No
+                                    file chosen</span>
+                            </div>
                             <div class="image-preview-container">
                                 <div class="image-preview" id="profileImagePreview"></div>
                                 <button type="button" id="deleteProfileImage" class="btn-icon btn-danger"
@@ -260,7 +269,7 @@
                     <h3>Site Settings</h3>
                     <form id="settingsForm">
 
-                        <!-- Site Bilgileri -->
+                        <!-- Site Information -->
                         <div style="margin-bottom: 2rem;">
                             <h4
                                 style="color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; gap: 0.5rem;">
@@ -286,7 +295,7 @@
                             </div>
                         </div>
 
-                        <!-- İstatistikler -->
+                        <!-- Statistics -->
                         <div style="margin-bottom: 2rem;">
                             <h4
                                 style="color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; gap: 0.5rem;">
@@ -305,7 +314,7 @@
                             </div>
                         </div>
 
-                        <!-- Sosyal Medya -->
+                        <!-- Social Media -->
                         <div style="margin-bottom: 2rem;">
                             <h4
                                 style="color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; gap: 0.5rem;">
@@ -385,7 +394,7 @@
                             </div>
                         </div>
 
-                        <!-- Görünüm -->
+                        <!-- Appearance -->
                         <div style="margin-bottom: 2rem;">
                             <h4
                                 style="color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; gap: 0.5rem;">

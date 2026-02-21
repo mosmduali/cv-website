@@ -62,7 +62,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
 
     const success = await login(username, password);
     if (!success) {
-        errorEl.textContent = 'Geçersiz kullanıcı adı veya şifre';
+        errorEl.textContent = 'Invalid username or password';
         errorEl.classList.add('show');
     }
 });
@@ -94,13 +94,13 @@ function switchSection(section) {
 
     // Update title
     const titles = {
-        profile: 'Profil Yönetimi',
-        skills: 'Beceri Yönetimi',
-        experience: 'Deneyim Yönetimi',
-        education: 'Eğitim Yönetimi',
-        projects: 'Proje Yönetimi',
-        achievements: 'Başarı Yönetimi',
-        settings: 'Site Ayarları'
+        profile: 'Profile Management',
+        skills: 'Skill Management',
+        experience: 'Experience Management',
+        education: 'Education Management',
+        projects: 'Project Management',
+        achievements: 'Achievement Management',
+        settings: 'Site Settings'
     };
     document.getElementById('sectionTitle').textContent = titles[section] || section;
 }
@@ -187,12 +187,12 @@ document.getElementById('profileForm')?.addEventListener('submit', async (e) => 
         });
 
         if (response.ok) {
-            showNotification('Profil başarıyla güncellendi!');
+            showNotification('Profile updated successfully!');
         } else {
-            showNotification('Profil güncellenirken hata oluştu', 'error');
+            showNotification('Error updating profile', 'error');
         }
     } catch (error) {
-        showNotification('Bir hata oluştu', 'error');
+        showNotification('An error occurred', 'error');
     }
 });
 
@@ -213,7 +213,7 @@ document.getElementById('profileImage')?.addEventListener('change', (e) => {
 
 // Delete profile image handler
 document.getElementById('deleteProfileImage')?.addEventListener('click', async () => {
-    if (!confirm('Profil resmini silmek istediğinizden emin misiniz?')) {
+    if (!confirm('Are you sure you want to delete the profile image?')) {
         return;
     }
 
@@ -232,10 +232,10 @@ document.getElementById('deleteProfileImage')?.addEventListener('click', async (
             preview.classList.remove('show');
             deleteBtn.style.display = 'none';
             document.getElementById('profileImage').value = '';
-            showNotification('Profil resmi silindi', 'success');
+            showNotification('Profile image deleted', 'success');
         }
     } catch (error) {
-        showNotification('Resim silinirken hata oluştu', 'error');
+        showNotification('Error deleting image', 'error');
     }
 });
 
@@ -262,8 +262,8 @@ function renderSkillsTable(skills) {
             <td><span class="badge badge-primary">${skill.category}</span></td>
             <td>${skill.proficiency}%</td>
             <td class="table-actions">
-                <button class="btn btn-small btn-secondary" onclick="editSkill(${skill.id})">Düzenle</button>
-                <button class="btn btn-small btn-danger" onclick="deleteSkill(${skill.id})">Sil</button>
+                <button class="btn btn-small btn-secondary" onclick="editSkill(${skill.id})">Edit</button>
+                <button class="btn btn-small btn-danger" onclick="deleteSkill(${skill.id})">Delete</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -271,14 +271,14 @@ function renderSkillsTable(skills) {
 }
 
 document.getElementById('addSkillBtn')?.addEventListener('click', () => {
-    showModal('Yeni Beceri Ekle', `
+    showModal('Add New Skill', `
         <form id="skillForm">
             <div class="form-group">
-                <label>Beceri Adı</label>
+                <label>Skill Name</label>
                 <input type="text" name="name" required>
             </div>
             <div class="form-group">
-                <label>Kategori</label>
+                <label>Category</label>
                 <select name="category" required>
                     <option value="Frontend">Frontend</option>
                     <option value="Backend">Backend</option>
@@ -287,10 +287,10 @@ document.getElementById('addSkillBtn')?.addEventListener('click', () => {
                 </select>
             </div>
             <div class="form-group">
-                <label>Seviye (%)</label>
+                <label>Proficiency (%)</label>
                 <input type="number" name="proficiency" min="0" max="100" required>
             </div>
-            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
     `);
 
@@ -307,12 +307,12 @@ document.getElementById('addSkillBtn')?.addEventListener('click', () => {
             });
 
             if (response.ok) {
-                showNotification('Beceri eklendi!');
+                showNotification('Skill added!');
                 closeModal();
                 loadSkills();
             }
         } catch (error) {
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     });
 });
@@ -324,21 +324,21 @@ window.editSkill = async (id) => {
         console.log('Fetch response:', response.status);
 
         if (!response.ok) {
-            showNotification('Beceri yüklenirken hata oluştu', 'error');
+            showNotification('Error loading skill', 'error');
             return;
         }
 
         const skill = await response.json();
         console.log('Skill data:', skill);
 
-        showModal('Beceriyi Düzenle', `
+        showModal('Edit Skill', `
             <form id="skillEditForm">
                 <div class="form-group">
-                    <label>Beceri Adı</label>
+                    <label>Skill Name</label>
                     <input type="text" name="name" value="${skill.name}" required>
                 </div>
                 <div class="form-group">
-                    <label>Kategori</label>
+                    <label>Category</label>
                     <select name="category" required>
                         <option value="Frontend" ${skill.category === 'Frontend' ? 'selected' : ''}>Frontend</option>
                         <option value="Backend" ${skill.category === 'Backend' ? 'selected' : ''}>Backend</option>
@@ -347,10 +347,10 @@ window.editSkill = async (id) => {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Seviye (%)</label>
+                    <label>Proficiency (%)</label>
                     <input type="number" name="proficiency" value="${skill.proficiency}" min="0" max="100" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Güncelle</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
         `);
 
@@ -367,33 +367,33 @@ window.editSkill = async (id) => {
                 });
 
                 if (response.ok) {
-                    showNotification('Beceri güncellendi!');
+                    showNotification('Skill updated!');
                     closeModal();
                     loadSkills();
                 } else {
-                    showNotification('Güncelleme başarısız', 'error');
+                    showNotification('Update failed', 'error');
                 }
             } catch (error) {
                 console.error('Update error:', error);
-                showNotification('Bir hata oluştu', 'error');
+                showNotification('An error occurred', 'error');
             }
         });
     } catch (error) {
         console.error('Error editing skill:', error);
-        showNotification('Bir hata oluştu: ' + error.message, 'error');
+        showNotification('An error occurred: ' + error.message, 'error');
     }
 };
 
 window.deleteSkill = async (id) => {
-    if (confirm('Bu beceriyi silmek istediğinize emin misiniz?')) {
+    if (confirm('Are you sure you want to delete this skill?')) {
         try {
             const response = await fetch(`/api/skills/${id}`, { method: 'DELETE' });
             if (response.ok) {
-                showNotification('Beceri silindi!');
+                showNotification('Skill deleted!');
                 loadSkills();
             }
         } catch (error) {
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     }
 };
@@ -419,7 +419,7 @@ function renderExperienceGrid(experiences) {
         card.className = 'item-card';
 
         const achievements = exp.achievements ? JSON.parse(exp.achievements) : [];
-        const endDate = exp.current ? 'Halen' : exp.end_date || '';
+        const endDate = exp.current ? 'Present' : exp.end_date || '';
 
         card.innerHTML = `
             <div class="item-card-header">
@@ -427,13 +427,13 @@ function renderExperienceGrid(experiences) {
                     <h4>${exp.position}</h4>
                     <div class="meta">${exp.company} • ${exp.start_date} - ${endDate}</div>
                 </div>
-                ${exp.current ? '<span class="badge badge-success">Mevcut</span>' : ''}
+                ${exp.current ? '<span class="badge badge-success">Current</span>' : ''}
             </div>
             ${exp.description ? `<p class="description">${exp.description}</p>` : ''}
-            ${achievements.length > 0 ? `<div class="description">${achievements.length} başarı</div>` : ''}
+            ${achievements.length > 0 ? `<div class="description">${achievements.length} achievements</div>` : ''}
             <div class="item-card-actions">
-                <button class="btn btn-small btn-secondary" onclick="editExperience(${exp.id})">Düzenle</button>
-                <button class="btn btn-small btn-danger" onclick="deleteExperience(${exp.id})">Sil</button>
+                <button class="btn btn-small btn-secondary" onclick="editExperience(${exp.id})">Edit</button>
+                <button class="btn btn-small btn-danger" onclick="deleteExperience(${exp.id})">Delete</button>
             </div>
         `;
 
@@ -447,43 +447,43 @@ document.getElementById('addExperienceBtn')?.addEventListener('click', () => {
 
 function showExperienceModal(experience = null) {
     const isEdit = experience !== null;
-    const title = isEdit ? 'Deneyimi Düzenle' : 'Yeni Deneyim Ekle';
+    const title = isEdit ? 'Edit Experience' : 'Add New Experience';
 
     showModal(title, `
         <form id="experienceForm">
             <div class="form-group">
-                <label>Şirket</label>
+                <label>Company</label>
                 <input type="text" name="company" value="${experience?.company || ''}" required>
             </div>
             <div class="form-group">
-                <label>Pozisyon</label>
+                <label>Position</label>
                 <input type="text" name="position" value="${experience?.position || ''}" required>
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Başlangıç Tarihi</label>
+                    <label>Start Date</label>
                     <input type="text" name="start_date" value="${experience?.start_date || ''}" placeholder="2022-01" required>
                 </div>
                 <div class="form-group">
-                    <label>Bitiş Tarihi</label>
+                    <label>End Date</label>
                     <input type="text" name="end_date" value="${experience?.end_date || ''}" placeholder="2023-12">
                 </div>
             </div>
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="current" ${experience?.current ? 'checked' : ''}>
-                    Halen burada çalışıyorum
+                    I currently work here
                 </label>
             </div>
             <div class="form-group">
-                <label>Açıklama</label>
+                <label>Description</label>
                 <textarea name="description" rows="3">${experience?.description || ''}</textarea>
             </div>
             <div class="form-group">
-                <label>Başarılar (her satır bir başarı)</label>
-                <textarea name="achievements" rows="5" placeholder="Performansı %40 artırdım&#10;5 kişilik bir ekibe liderlik ettim">${experience?.achievements ? JSON.parse(experience.achievements).join('\n') : ''}</textarea>
+                <label>Achievements (one per line)</label>
+                <textarea name="achievements" rows="5" placeholder="Increased performance by 40%&#10;Led a team of 5 people">${experience?.achievements ? JSON.parse(experience.achievements).join('\n') : ''}</textarea>
             </div>
-            <button type="submit" class="btn btn-primary">${isEdit ? 'Güncelle' : 'Kaydet'}</button>
+            <button type="submit" class="btn btn-primary">${isEdit ? 'Update' : 'Save'}</button>
         </form>
     `);
 
@@ -511,12 +511,12 @@ function showExperienceModal(experience = null) {
             });
 
             if (response.ok) {
-                showNotification(isEdit ? 'Deneyim güncellendi!' : 'Deneyim eklendi!');
+                showNotification(isEdit ? 'Experience updated!' : 'Experience added!');
                 closeModal();
                 loadExperience();
             }
         } catch (error) {
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     });
 }
@@ -528,7 +528,7 @@ window.editExperience = async (id) => {
         console.log('Fetch response:', response.status);
 
         if (!response.ok) {
-            showNotification('Deneyim yüklenirken hata oluştu', 'error');
+            showNotification('Error loading experience', 'error');
             return;
         }
 
@@ -537,20 +537,20 @@ window.editExperience = async (id) => {
         showExperienceModal(experience);
     } catch (error) {
         console.error('Error editing experience:', error);
-        showNotification('Bir hata oluştu: ' + error.message, 'error');
+        showNotification('An error occurred: ' + error.message, 'error');
     }
 };
 
 window.deleteExperience = async (id) => {
-    if (confirm('Bu deneyimi silmek istediğinize emin misiniz?')) {
+    if (confirm('Are you sure you want to delete this experience?')) {
         try {
             const response = await fetch(`/api/experience/${id}`, { method: 'DELETE' });
             if (response.ok) {
-                showNotification('Deneyim silindi!');
+                showNotification('Experience deleted!');
                 loadExperience();
             }
         } catch (error) {
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     }
 };
@@ -583,14 +583,14 @@ function renderEducationGrid(education) {
             <div class="item-card-header">
                 <div>
                     <h4>${edu.degree} - ${edu.institution}</h4>
-                    <div class="meta">${edu.start_date} - ${edu.end_date || 'Halen'}</div>
+                    <div class="meta">${edu.start_date} - ${edu.end_date || 'Present'}</div>
                 </div>
             </div>
             ${edu.description ? `<p class="description">${edu.description}</p>` : ''}
-            ${edu.field ? `<div class="meta">Alan: ${edu.field}</div>` : ''}
+            ${edu.field ? `<div class="meta">Field: ${edu.field}</div>` : ''}
             <div class="item-card-actions">
-                <button class="btn btn-small btn-secondary" onclick="editEducation(${edu.id})">Düzenle</button>
-                <button class="btn btn-small btn-danger" onclick="deleteEducation(${edu.id})">Sil</button>
+                <button class="btn btn-small btn-secondary" onclick="editEducation(${edu.id})">Edit</button>
+                <button class="btn btn-small btn-danger" onclick="deleteEducation(${edu.id})">Delete</button>
             </div>
         `;
 
@@ -604,37 +604,37 @@ document.getElementById('addEducationBtn')?.addEventListener('click', () => {
 
 function showEducationModal(education = null) {
     const isEdit = education !== null;
-    const title = isEdit ? 'Eğitimi Düzenle' : 'Yeni Eğitim Ekle';
+    const title = isEdit ? 'Edit Education' : 'Add New Education';
 
     showModal(title, `
         <form id="educationForm">
             <div class="form-group">
-                <label>Kurum</label>
+                <label>Institution</label>
                 <input type="text" name="institution" value="${education?.institution || ''}" required>
             </div>
             <div class="form-group">
-                <label>Derece/Diploma</label>
+                <label>Degree/Diploma</label>
                 <input type="text" name="degree" value="${education?.degree || ''}" required>
             </div>
             <div class="form-group">
-                <label>Alan</label>
+                <label>Field</label>
                 <input type="text" name="field" value="${education?.field || ''}">
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Başlangıç Tarihi</label>
+                    <label>Start Date</label>
                     <input type="text" name="start_date" value="${education?.start_date || ''}" placeholder="2018-09" required>
                 </div>
                 <div class="form-group">
-                    <label>Bitiş Tarihi</label>
+                    <label>End Date</label>
                     <input type="text" name="end_date" value="${education?.end_date || ''}" placeholder="2022-06">
                 </div>
             </div>
             <div class="form-group">
-                <label>Açıklama</label>
+                <label>Description</label>
                 <textarea name="description" rows="3">${education?.description || ''}</textarea>
             </div>
-            <button type="submit" class="btn btn-primary">${isEdit ? 'Güncelle' : 'Kaydet'}</button>
+            <button type="submit" class="btn btn-primary">${isEdit ? 'Update' : 'Save'}</button>
         </form>
     `);
 
@@ -654,15 +654,15 @@ function showEducationModal(education = null) {
             });
 
             if (response.ok) {
-                showNotification(isEdit ? 'Eğitim güncellendi!' : 'Eğitim eklendi!');
+                showNotification(isEdit ? 'Education updated!' : 'Education added!');
                 closeModal();
                 loadEducation();
             } else {
-                showNotification('İşlem başarısız', 'error');
+                showNotification('Action failed', 'error');
             }
         } catch (error) {
             console.error('Education save error:', error);
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     });
 }
@@ -672,27 +672,27 @@ window.editEducation = async (id) => {
     try {
         const response = await fetch(`/api/education/${id}`);
         if (!response.ok) {
-            showNotification('Eğitim yüklenirken hata oluştu', 'error');
+            showNotification('Error loading education', 'error');
             return;
         }
         const education = await response.json();
         showEducationModal(education);
     } catch (error) {
         console.error('Error editing education:', error);
-        showNotification('Bir hata oluştu: ' + error.message, 'error');
+        showNotification('An error occurred: ' + error.message, 'error');
     }
 };
 
 window.deleteEducation = async (id) => {
-    if (confirm('Bu eğitimi silmek istediğinize emin misiniz?')) {
+    if (confirm('Are you sure you want to delete this education?')) {
         try {
             const response = await fetch(`/api/education/${id}`, { method: 'DELETE' });
             if (response.ok) {
-                showNotification('Eğitim silindi!');
+                showNotification('Education deleted!');
                 loadEducation();
             }
         } catch (error) {
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     }
 };
@@ -729,14 +729,14 @@ function renderProjectsGrid(projects) {
             <div class="item-card-header">
                 <div>
                     <h4>${project.title}</h4>
-                    ${project.featured ? '<span class="badge badge-success">Öne Çıkan</span>' : ''}
+                    ${project.featured ? '<span class="badge badge-success">Featured</span>' : ''}
                 </div>
             </div>
             ${project.description ? `<p class="description">${project.description}</p>` : ''}
             ${technologies.length > 0 ? `<div class="meta">${technologies.join(', ')}</div>` : ''}
             <div class="item-card-actions">
-                <button class="btn btn-small btn-secondary" onclick="editProject(${project.id})">Düzenle</button>
-                <button class="btn btn-small btn-danger" onclick="deleteProject(${project.id})">Sil</button>
+                <button class="btn btn-small btn-secondary" onclick="editProject(${project.id})">Edit</button>
+                <button class="btn btn-small btn-danger" onclick="deleteProject(${project.id})">Delete</button>
             </div>
         `;
 
@@ -749,28 +749,28 @@ document.getElementById('addProjectBtn')?.addEventListener('click', () => {
 });
 
 document.getElementById('importGithubBtn')?.addEventListener('click', async () => {
-    const username = prompt('GitHub kullanıcı adınızı girin:', '');
+    const username = prompt('Enter your GitHub username:', '');
     if (!username) return;
 
     try {
-        showNotification('GitHub projeleri çekiliyor...', 'warning');
+        showNotification('Fetching GitHub projects...', 'warning');
 
         const response = await fetch(`/api/github/repos/${username}`);
         if (!response.ok) {
-            showNotification('GitHub API hatası', 'error');
+            showNotification('GitHub API error', 'error');
             return;
         }
 
         const repos = await response.json();
 
         if (repos.length === 0) {
-            showNotification('GitHub hesabında proje bulunamadı', 'warning');
+            showNotification('No projects found in GitHub account', 'warning');
             return;
         }
 
         // Show selection modal
-        showModal('GitHub Projelerini Seç', `
-            <p>Eklemek istediğiniz projeleri seçin (${repos.length} proje bulundu):</p>
+        showModal('Select GitHub Projects', `
+            <p>Select the projects you want to add (${repos.length} projects found):</p>
             <form id="githubSelectForm">
                 <div style="max-height: 400px; overflow-y: auto;">
                     ${repos.map((repo, index) => `
@@ -788,14 +788,14 @@ document.getElementById('importGithubBtn')?.addEventListener('click', async () =
                                 `}
                                 <div style="flex: 1;">
                                     <strong>${repo.title}</strong>
-                                    <p style="margin: 0.5rem 0; color: var(--text-secondary); font-size: 0.875rem;">${repo.description || 'Açıklama yok'}</p>
+                                    <p style="margin: 0.5rem 0; color: var(--text-secondary); font-size: 0.875rem;">${repo.description || 'No description'}</p>
                                     ${repo.technologies !== '[]' ? `<div style="font-size: 0.75rem; color: var(--text-muted);">${JSON.parse(repo.technologies).join(', ')}</div>` : ''}
                                 </div>
                             </label>
                         </div>
                     `).join('')}
                 </div>
-                <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Seçilenleri Ekle</button>
+                <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Add Selected</button>
             </form>
         `);
 
@@ -811,7 +811,7 @@ document.getElementById('importGithubBtn')?.addEventListener('click', async () =
             });
 
             if (selectedRepos.length === 0) {
-                showNotification('Hiç proje seçilmedi', 'warning');
+                showNotification('No projects selected', 'warning');
                 return;
             }
 
@@ -831,51 +831,57 @@ document.getElementById('importGithubBtn')?.addEventListener('click', async () =
             }
 
             closeModal();
-            showNotification(`${successCount}/${selectedRepos.length} proje başarıyla eklendi!`);
+            showNotification(`${successCount}/${selectedRepos.length} projects successfully added!`);
             loadProjects();
         });
 
     } catch (error) {
         console.error('GitHub import error:', error);
-        showNotification('Bir hata oluştu: ' + error.message, 'error');
+        showNotification('An error occurred: ' + error.message, 'error');
     }
 });
 
 
 function showProjectModal(project = null) {
     const isEdit = project !== null;
-    const title = isEdit ? 'Projeyi Düzenle' : 'Yeni Proje Ekle';
+    const title = isEdit ? 'Edit Project' : 'Add New Project';
 
     showModal(title, `
         <form id="projectForm">
             <div class="form-group">
-                <label>Proje Başlığı</label>
+                <label>Project Title</label>
                 <input type="text" name="title" value="${project?.title || ''}" required>
             </div>
             <div class="form-group">
-                <label>Açıklama</label>
+                <label>Description</label>
                 <textarea name="description" rows="3">${project?.description || ''}</textarea>
             </div>
             <div class="form-group">
-                <label>Proje Resmi</label>
-                <input type="file" name="image" id="projectImageInput" accept="image/*">
+                <label>Project Image</label>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                    <label class="btn btn-secondary" style="margin: 0; cursor: pointer;">
+                        Choose File
+                        <input type="file" name="image" id="projectImageInput" accept="image/*" style="display: none;" onchange="document.getElementById('projectFileName').textContent = this.files.length > 0 ? this.files[0].name : 'No file chosen'">
+                    </label>
+                    <span id="projectFileName" style="color: var(--text-muted); font-size: 0.875rem;">No file chosen</span>
+                </div>
                 <div class="image-preview-container">
                     <div class="image-preview" id="projectImagePreview">${project?.image ? `<img src="${project.image}" alt="Project">` : ''}</div>
-                    ${project?.image ? `<button type="button" id="deleteProjectImage" class="btn-icon btn-danger" title="Resmi sil">
+                    ${project?.image ? `<button type="button" id="deleteProjectImage" class="btn-icon btn-danger" title="Delete Image">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>` : ''}
                 </div>
-                <small style="color: var(--text-muted);">PNG, JPG veya WebP formatında</small>
+                <small style="color: var(--text-muted);">PNG, JPG, or WebP format</small>
             </div>
             <div class="form-group">
-                <label>Teknolojiler (virgülle ayırın)</label>
+                <label>Technologies (comma separated)</label>
                 <input type="text" name="technologies" value="${project?.technologies ? JSON.parse(project.technologies).join(', ') : ''}" placeholder="React, Node.js, MongoDB">
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Canlı Demo URL</label>
+                    <label>Live Demo URL</label>
                     <input type="url" name="live_url" value="${project?.live_url || ''}">
                 </div>
                 <div class="form-group">
@@ -886,10 +892,10 @@ function showProjectModal(project = null) {
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="featured" ${project?.featured ? 'checked' : ''}>
-                    Öne çıkan proje
+                    Featured project
                 </label>
             </div>
-            <button type="submit" class="btn btn-primary">${isEdit ? 'Güncelle' : 'Kaydet'}</button>
+            <button type="submit" class="btn btn-primary">${isEdit ? 'Update' : 'Save'}</button>
         </form>
     `);
 
@@ -947,15 +953,15 @@ function showProjectModal(project = null) {
             });
 
             if (response.ok) {
-                showNotification(isEdit ? 'Proje güncellendi!' : 'Proje eklendi!');
+                showNotification(isEdit ? 'Project updated!' : 'Project added!');
                 closeModal();
                 loadProjects();
             } else {
-                showNotification('İşlem başarısız', 'error');
+                showNotification('Action failed', 'error');
             }
         } catch (error) {
             console.error('Project save error:', error);
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     });
 }
@@ -965,27 +971,27 @@ window.editProject = async (id) => {
     try {
         const response = await fetch(`/api/projects/${id}`);
         if (!response.ok) {
-            showNotification('Proje yüklenirken hata oluştu', 'error');
+            showNotification('Error loading project', 'error');
             return;
         }
         const project = await response.json();
         showProjectModal(project);
     } catch (error) {
         console.error('Error editing project:', error);
-        showNotification('Bir hata oluştu: ' + error.message, 'error');
+        showNotification('An error occurred: ' + error.message, 'error');
     }
 };
 
 window.deleteProject = async (id) => {
-    if (confirm('Bu projeyi silmek istediğinize emin misiniz?')) {
+    if (confirm('Are you sure you want to delete this project?')) {
         try {
             const response = await fetch(`/api/projects/${id}`, { method: 'DELETE' });
             if (response.ok) {
-                showNotification('Proje silindi!');
+                showNotification('Project deleted!');
                 loadProjects();
             }
         } catch (error) {
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     }
 };
@@ -1020,8 +1026,8 @@ function renderAchievementsGrid(achievements) {
             </div>
             ${achievement.description ? `<p class="description">${achievement.description}</p>` : ''}
             <div class="item-card-actions">
-                <button class="btn btn-small btn-secondary" onclick="editAchievement(${achievement.id})">Düzenle</button>
-                <button class="btn btn-small btn-danger" onclick="deleteAchievement(${achievement.id})">Sil</button>
+                <button class="btn btn-small btn-secondary" onclick="editAchievement(${achievement.id})">Edit</button>
+                <button class="btn btn-small btn-danger" onclick="deleteAchievement(${achievement.id})">Delete</button>
             </div>
         `;
 
@@ -1035,27 +1041,27 @@ document.getElementById('addAchievementBtn')?.addEventListener('click', () => {
 
 function showAchievementModal(achievement = null) {
     const isEdit = achievement !== null;
-    const title = isEdit ? 'Başarıyı Düzenle' : 'Yeni Başarı Ekle';
+    const title = isEdit ? 'Edit Achievement' : 'Add New Achievement';
 
     showModal(title, `
         <form id="achievementForm">
             <div class="form-group">
-                <label>Başlık</label>
+                <label>Title</label>
                 <input type="text" name="title" value="${achievement?.title || ''}" required>
             </div>
             <div class="form-group">
-                <label>Açıklama</label>
+                <label>Description</label>
                 <textarea name="description" rows="3">${achievement?.description || ''}</textarea>
             </div>
             <div class="form-group">
-                <label>Tarih</label>
+                <label>Date</label>
                 <input type="text" name="date" value="${achievement?.date || ''}" placeholder="2023">
             </div>
             <div class="form-group">
-                <label>Icon (emoji veya text)</label>
+                <label>Icon (emoji or text)</label>
                 <input type="text" name="icon" value="${achievement?.icon || ''}" placeholder="🏆">
             </div>
-            <button type="submit" class="btn btn-primary">${isEdit ? 'Güncelle' : 'Kaydet'}</button>
+            <button type="submit" class="btn btn-primary">${isEdit ? 'Update' : 'Save'}</button>
         </form>
     `);
 
@@ -1075,15 +1081,15 @@ function showAchievementModal(achievement = null) {
             });
 
             if (response.ok) {
-                showNotification(isEdit ? 'Başarı güncellendi!' : 'Başarı eklendi!');
+                showNotification(isEdit ? 'Achievement updated!' : 'Achievement added!');
                 closeModal();
                 loadAchievements();
             } else {
-                showNotification('İşlem başarısız', 'error');
+                showNotification('Action failed', 'error');
             }
         } catch (error) {
             console.error('Achievement save error:', error);
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     });
 }
@@ -1093,27 +1099,27 @@ window.editAchievement = async (id) => {
     try {
         const response = await fetch(`/api/achievements/${id}`);
         if (!response.ok) {
-            showNotification('Başarı yüklenirken hata oluştu', 'error');
+            showNotification('Error loading achievement', 'error');
             return;
         }
         const achievement = await response.json();
         showAchievementModal(achievement);
     } catch (error) {
         console.error('Error editing achievement:', error);
-        showNotification('Bir hata oluştu: ' + error.message, 'error');
+        showNotification('An error occurred: ' + error.message, 'error');
     }
 };
 
 window.deleteAchievement = async (id) => {
-    if (confirm('Bu başarıyı silmek istediğinize emin misiniz?')) {
+    if (confirm('Are you sure you want to delete this achievement?')) {
         try {
             const response = await fetch(`/api/achievements/${id}`, { method: 'DELETE' });
             if (response.ok) {
-                showNotification('Başarı silindi!');
+                showNotification('Achievement deleted!');
                 loadAchievements();
             }
         } catch (error) {
-            showNotification('Bir hata oluştu', 'error');
+            showNotification('An error occurred', 'error');
         }
     }
 };
@@ -1153,12 +1159,12 @@ document.getElementById('settingsForm')?.addEventListener('submit', async (e) =>
         });
 
         if (response.ok) {
-            showNotification('Ayarlar kaydedildi!');
+            showNotification('Settings saved!');
         } else {
-            showNotification('Ayarlar kaydedilirken hata oluştu', 'error');
+            showNotification('Error saving settings', 'error');
         }
     } catch (error) {
-        showNotification('Bir hata oluştu', 'error');
+        showNotification('An error occurred', 'error');
     }
 });
 
@@ -1170,12 +1176,12 @@ document.getElementById('changeUsernameBtn')?.addEventListener('click', async ()
     const currentPassword = document.getElementById('currentPasswordForUsername').value;
 
     if (!newUsername) {
-        showNotification('Lütfen yeni kullanıcı adını girin', 'error');
+        showNotification('Please enter the new username', 'error');
         return;
     }
 
     if (!currentPassword) {
-        showNotification('Lütfen mevcut şifrenizi girin', 'error');
+        showNotification('Please enter your current password', 'error');
         return;
     }
 
@@ -1193,16 +1199,16 @@ document.getElementById('changeUsernameBtn')?.addEventListener('click', async ()
         const data = await response.json();
 
         if (response.ok) {
-            showNotification('Kullanıcı adı başarıyla güncellendi!');
+            showNotification('Username updated successfully!');
             document.getElementById('newUsername').value = '';
             document.getElementById('currentPasswordForUsername').value = '';
             currentUser = newUsername;
         } else {
-            showNotification(data.error || 'Kullanıcı adı güncellenirken hata oluştu', 'error');
+            showNotification(data.error || 'Error updating username', 'error');
         }
     } catch (error) {
         console.error('Username update error:', error);
-        showNotification('Bir hata oluştu', 'error');
+        showNotification('An error occurred', 'error');
     }
 });
 
@@ -1214,26 +1220,26 @@ document.getElementById('changePasswordBtn')?.addEventListener('click', async ()
 
     // Validation
     if (!currentPassword) {
-        showNotification('Lütfen mevcut şifrenizi girin', 'error');
+        showNotification('Please enter your current password', 'error');
         return;
     }
 
     if (!newPassword) {
-        showNotification('Lütfen yeni şifrenizi girin', 'error');
+        showNotification('Please enter your new password', 'error');
         return;
     }
 
     if (newPassword.length < 8) {
-        showNotification('Yeni şifre en az 8 karakter olmalıdır', 'error');
+        showNotification('New password must be at least 8 characters long', 'error');
         return;
     }
 
     if (newPassword !== confirmNewPassword) {
-        showNotification('Yeni şifreler eşleşmiyor', 'error');
+        showNotification('New passwords do not match', 'error');
         return;
     }
 
-    if (!confirm('Şifrenizi değiştirmek istediğinizden emin misiniz? Otomatik olarak çıkış yapılacak ve yeniden giriş yapmanız gereكecektir.')) {
+    if (!confirm('Are you sure you want to change your password? You will automatically be logged out and asked to log in again.')) {
         return;
     }
 
@@ -1250,16 +1256,16 @@ document.getElementById('changePasswordBtn')?.addEventListener('click', async ()
         const data = await response.json();
 
         if (response.ok) {
-            showNotification('Şifre başarıyla güncellendi! Yeniden giriş yapmanız gerekiyor...');
+            showNotification('Password updated successfully! You need to log in again...');
             setTimeout(() => {
                 location.reload();
             }, 2000);
         } else {
-            showNotification(data.error || 'Şifre güncellenirken hata oluştu', 'error');
+            showNotification(data.error || 'Error updating password', 'error');
         }
     } catch (error) {
         console.error('Password update error:', error);
-        showNotification('Bir hata oluştu', 'error');
+        showNotification('An error occurred', 'error');
     }
 });
 
