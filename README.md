@@ -1,4 +1,4 @@
-"# 🚀 CV Portfolio Website
+# 🚀 CV Portfolio Website
 
 A modern, full-stack personal CV/portfolio website with a built-in admin panel. Built with **Node.js**, **Express**, and **SQLite** — no heavy frameworks, just clean and fast.
 
@@ -140,4 +140,3 @@ If you need to reset your database, delete the `cv-data.db` file and restart the
 ## 📄 License
 
 ISC — feel free to use and modify for your own portfolio.
-" github da repom için bu projenin yapay zeka idesi ile yapıldığını yazan bir ibare ekle
